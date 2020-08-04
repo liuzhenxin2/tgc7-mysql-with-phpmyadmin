@@ -1,39 +1,16 @@
-<img src="https://codeinstitute.s3.amazonaws.com/fullstack/ci_logo_small.png" style="margin: 0;">
+# Insructions to install PhpMyAdmin
 
-Welcome USER_NAME,
+Demonstrate how to use PhpMyAdmin with a project created from the code institute Gitpod Template.
 
-This is the Code Institute student template for Gitpod. We have preinstalled all of the tools you need to get started. You can safely delete this README.md file, or change it for your own project.
+The commands are found in `install.sh` - the file is now automatically run as part of the `init_tasks.sh` script inside the `.theia` folder. If you are interested in just install PHPMyAdmin for an existing GitPod instance, you can just copy the script over in a .sh file (and be sure to set the executable permission with `chmod -u=rwx` on the file first!).
 
-## Gitpod Reminders
+You still need to do one manual step to configure PHPMyAdmin correctly:
 
-To run a frontend (HTML, CSS, Javascript only) application in Gitpod, in the terminal, type:
+To setup PHPMyAdmin for GitPod:
 
-`python3 -m http.server`
-
-A blue button should appear to click: *Make Public*,
-
-Another blue button should appear to click: *Open Browser*.
-
-To run a backend Python file, type `python3 app.py`, if your Python file is named `app.py` of course.
-
-A blue button should appear to click: *Make Public*,
-
-Another blue button should appear to click: *Open Browser*.
-
-In Gitpod you have superuser security privileges by default. Therefore you do not need to use the `sudo` (superuser do) command in the bash terminal in any of the backend lessons.
-
-## Updates Since The Instructional Video
-
-We continually tweak and adjust this template to help give you the best experience. Here are the updates since the original video was made:
-
-**April 16 2020:** The template now automatically installs MySQL instead of relying on the Gitpod MySQL image. The message about a Python linter not being installed has been dealt with, and the set-up files are now hidden in the Gitpod file explorer.
-
-**April 13 2020:** Added the _Prettier_ code beautifier extension instead of the code formatter built-in to Gitpod.
-
-**February 2020:** The initialisation files now _do not_ auto-delete. They will remain in your project. You can safely ignore them. They just make sure that your workspace is configured correctly each time you open it. It will also prevent the Gitpod configuration popup from appearing.
-
-**December 2019:** Added Eventyret's Bootstrap 4 extension. Type `!bscdn` in a HTML file to add the Bootstrap boilerplate. Check out the <a href="https://github.com/Eventyret/vscode-bcdn" target="_blank">README.md file at the official repo</a> for more options.
-
---------
-
-Happy coding!
+1. Find the file `public/phpmyadmin/config.inc.php`
+2. Look for the string `AllowNoPassword`
+3. Change the line to read: `$cfg['Servers'][$i]['AllowNoPassword'] = true;` and *remember to save*
+4. Start apache with `apachectl start` and when the pop-up appears, click `Open Browser`
+5. At the browser, add `/phpmyadmin` to the end of the URL in the address bar
+6. Login with user `root` and no password.
