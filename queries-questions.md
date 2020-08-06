@@ -38,7 +38,7 @@ what are the products they should consider?
    Show the first name and last name of the person to contact to inform them of their eligibility.
 
 4. The company wants to add some customers to a loyalty program. Any customers whose first purchase is at least
-10 years ago is eligible. Show the customer name in the results.
+15 years ago is eligible. Show the customer name in the results.
 
 5. The boss wants to see which country is the most lurcative country, in terms of amount paid.
    Show the amount paid per country, sorted by their amount paid.
