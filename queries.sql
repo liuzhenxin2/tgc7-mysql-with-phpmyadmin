@@ -179,3 +179,5 @@ select * from employees where jobTitle like "Sales%";
 select * from employees where jobTitle like "%Sales";
 /* search by a substring */
 select * from employees where jobTitle like "%man%";
+
+select * from employees join offices on employees.officeCode = offices.officeCode;
