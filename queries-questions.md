@@ -34,7 +34,7 @@ what are the products they should consider?
 
 2. The boss wants to know the total revenue earnt from customers between June 2004 and March 2005.
 
-3. The company is organising a lucky draw. Customers who have made a purchase in the year of 2006 is eligible.
+3. The company is organising a lucky draw. Customers who have made a purchase in the year of 2005 is eligible.
    Show the first name and last name of the person to contact to inform them of their eligibility.
 
 4. The company wants to add some customers to a loyalty program. Any customers whose first purchase is at least
