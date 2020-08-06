@@ -51,3 +51,35 @@ what are the products they should consider?
 
 9. The boss wants to see the worst 3 performing products, in terms of quantity ordered.
 
+# TRANCHE 4
+1. Find all orders that are cancelled in the year of 2004
+
+2. Find out the names of customer who have cancelled orders
+
+3. Find out the names of customers who have dispute in their orders (use the `comments` column) 
+and who their sales rep are.
+
+4. Show the number of cancelled orders per year.
+
+5. Total up the loss in revenue from cancelled orders per year. Hint: you can group by the result
+of a function.
+
+6. Show the top 3 product code with most quantity ordered, along with its name and the total quantity
+ordered
+ 
+7. Show the top 3 product code with most quantity ordered, along with its name and the total quantity
+ordered, but time only from the product lines Classic Cars and Motorcycles.
+
+8. The boss wants to see the sales performance for each office. He wants to evaluate each office
+by the total revenue made, and the number of paying customers they have. Write the query
+that can generate this table. 
+
+9. Contiuned from question 8, the boss wants to reward the top 3 offices with a prize. Show
+which those offices are in alphabetical order.
+
+# TRANCHE 5
+
+1. The boss wants to open a new office in a country. She does so by evaluating how much can
+be earnt from a particular country. She will only open an office in countries that does not
+have an office already. Show the top 3 countries that are elgibile.
+ 
