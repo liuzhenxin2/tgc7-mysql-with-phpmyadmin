@@ -301,3 +301,92 @@ limit 2
 /* 6. select */
 /* 7. order by */
 /* 8. limit */ 
+
+/** SUB QUERIES **/
+
+/* Find all the customers who are in countries where there is a branch office */
+
+/* q1. straightforward answers */
+select * from customers where country = 'USA'
+or country = 'France'
+or country = 'Japan'
+or country = 'UK'
+or country = 'Australia'
+
+/* using subquery */
+select * from customers where country in (select distinct country from offices)
+
+/* Find all the orders made in the year which the company made the most money */
+SELECT * FROM orders WHERE year(orderDate) = 
+(SELECT year(paymentDate) FROM payments group by year(paymentDate) 
+ORDER BY sum(amount) DESC
+LIMIT 1);
+
+/* Find all the products that never have been ordered before */
+SELECT productCode, productName from products where productCode not in
+(SELECT distinct productCode FROM orderdetails);
+
+/* Find all customers in USA which credit limit is higher or equal to the lowest credit limit of customers
+from France */
+select * from customers where 
+	country = "USA" and creditLimit >
+(select min(creditLimit) from customers where country="France")
+
+/* find all the customers who have bought the top 3 most purchased product by quantity */
+
+select * from customers join orders
+	on customers.customerNumber = orders.customerNumber
+join orderdetails
+	on orderdetails.orderNumber = orders.orderNumber
+where productCode in
+(select productCode from orderdetails 
+ 	group by productCode
+ 	order by sum(quantityOrdered) desc
+	limit 3)
+
+/* but MySQL demands this */
+
+select * from customers join orders
+	on customers.customerNumber = orders.customerNumber
+join orderdetails
+	on orderdetails.orderNumber = orders.orderNumber
+where productCode in
+( select productCode from (select productCode from orderdetails 
+ 	group by productCode
+ 	order by sum(quantityOrdered) desc
+	limit 3) as `inner`)
+
+/* for each customer, find out the most expensive product bought and the number of cancelled orders */
+
+/* for each customer, find out the highest the customer have paid for per product and
+the number of cancelled */
+
+select `left`.customerNumber, max_price, number_cancelled from 
+(
+SELECT customers.customerNumber, max(priceEach) as `max_price` FROM customers 
+join orders on
+	customers.customerNumber = orders.customerNumber
+join orderdetails
+	on orders.orderNumber = orderdetails.orderNumber
+group by customerNumber
+) as `left`
+join
+(
+select orders.customerNumber, count(*) as `number_cancelled`
+from orders
+where orders.status = 'Cancelled'
+group by orders.customerNumber
+) as `right`
+on `left`.customerNumber = `right`.customerNumber
+
+/* get most expensive product code for each customer */
+select temp.customerNumber, productCode, priceEach from customers  as temp join orders
+	on temp.customerNumber = orders.customerNumber
+join orderdetails
+	on orders.orderNumber = orderdetails.orderNumber
+where priceEach = (select max(priceEach) from customers as ct join orders
+	on ct.customerNumber = orders.customerNumber
+join orderdetails
+	on orders.orderNumber = orderdetails.orderNumber
+where ct.customerNumber=temp.customerNumber
+				  )

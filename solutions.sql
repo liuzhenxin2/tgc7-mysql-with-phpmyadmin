@@ -43,3 +43,59 @@ select * from products where (productName like "%car%") and (buyPrice >= 50 and 
 
 /* q5 */
 select * from products where quantityInStock >= 7000 and buyPrice <= 50;
+
+/* tranch 3 */
+/* q1 */
+SELECT * FROM payments where year(paymentDate) = '2004' and month(paymentDate)='6';
+SELECT * FROM payments where paymentDate >= "2004-06-01" and paymentDate < "2004-07-01";
+
+/* q2 */
+select SUM(amount) from payments where paymentDate between '2004-06-01' and '2005-03-31';
+select sum(amount) from payments where paymentDate >= '2004-06-01' and paymentDate <='2005-03-31';
+
+/* q3 */
+select distinct contactFirstName, contactLastName from customers 
+join orders on orders.customerNumber = customers.customerNumber
+where year(orderDate) = '2005'
+
+/* q4 */
+select distinct customerName from customers join payments on
+customers.customerNumber = payments.customerNumber
+where year(now()) - year(payments.paymentDate) >= 15 
+
+/* q5 */
+select country, sum(amount) from customers join payments 
+on customers.customerNumber = payments.customerNumber
+group by country
+order by sum(amount) desc
+
+/* q6 */
+select customerName, payments.customerNumber from customers join payments on 
+payments.customernumber = customers.customerNumber
+group by payments.customerNumber
+having sum(amount) > 20000
+
+/* q7 */
+select customerName, payments.customerNumber, sum(amount) from customers join payments on 
+payments.customernumber = customers.customerNumber
+group by payments.customerNumber
+order by sum(amount) desc
+limit 3
+
+/* q8 */
+select sum(amount), employeeNumber, firstName, lastName
+from payments join customers 
+	on payments.customerNumber = customers.customerNumber
+join employees 
+	on employees.employeeNumber = customers.salesRepEmployeeNumber
+group by employeeNumber
+order by sum(amount) desc
+limit 3
+	
+/* q9 */
+select products.productCode, productName, sum(quantityOrdered) from products 
+join orderdetails 
+	on products.productCode = orderdetails.productCode
+group by products.productCode
+order by sum(quantityOrdered) asc
+limit 3
