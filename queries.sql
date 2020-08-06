@@ -181,3 +181,123 @@ select * from employees where jobTitle like "%Sales";
 select * from employees where jobTitle like "%man%";
 
 select * from employees join offices on employees.officeCode = offices.officeCode;
+
+/* DATES */
+select * from orders where requiredDate='2003-01-13'
+
+/* show the year, month and day component */
+select orderDate, year(orderDate), month(orderDate), day(orderDate) from orders 
+
+/* show all orders in the year 2003 */
+select * from orders where year(orderDate) = '2003'
+
+/* show all orders in the June of year 2003 */
+select * from orders where year(orderDate) = '2003' and month(orderDate) = '6'
+
+/* show all orders after 30th June 2003 */
+select * from orders where orderDate > '2003-06-30'
+
+/* show all the orders that have already been shipped */
+select * from orders where shippedDate <= NOW()
+
+/* show the current date */
+select curdate();
+select now(); 
+
+/* show all orders that are required 3 days later */
+select * from orders where shippedDate - NOW() = 3
+
+/* JOINS ADVANCED */
+/* show all employees from USA */
+SELECT * FROM employees JOIN offices
+ 	ON employees.officeCode = offices.officeCode
+WHERE country="USA"
+
+SELECT * FROM employees JOIN offices
+ 	ON employees.officeCode = offices.officeCode
+WHERE country="USA"
+ORDER BY firstName
+
+/* limit to the first 3 results */
+SELECT * FROM employees JOIN offices
+ 	ON employees.officeCode = offices.officeCode
+WHERE country="USA"
+ORDER BY firstName DESC
+LIMIT 3
+
+/** AGGREGATES **/
+
+/* select only the unique values */
+select distinct lastName from employees;
+
+/* count */
+select count(*) from employees
+
+/* sum column */
+SELECT sum(creditLimit) FROM customers;
+SELECT sum(creditLimit) FROM customers WHERE country="USA"
+
+/* avg column */
+SELECT avg(creditLimit) FROM customers WHERE country="USA"
+
+/* minimal column */
+SELECT min(creditLimit) FROM customers WHERE country="USA"
+
+/* max column */
+SELECT max(creditLimit) FROM customers WHERE country="USA"
+
+/**  GROUP BY **/
+
+/* show the average credit limit by country */
+select avg(creditLimit), country from customers group by country;
+
+/* surefire to write a working group by
+ 1. figure out the critera to group by
+ 2. which table?
+ 3. What do I want to summarize?
+ 4. Always must select the column that you group by
+*/
+
+/* show the number of employees from office code */
+select count(*),officeCode from employees group by officeCode
+
+/* only show office code with 4 or more employees */
+select count(*),officeCode from employees 
+	group by officeCode having count(*) >= 4
+
+
+/* show the top 3 countries by average limit but only from a selected pool */
+SELECT avg(creditLimit), country FROM customers 
+where country = "USA" or country = "Canada" or country = "France" 
+	or country = "Israel" or country="Belgium"
+group by country
+having avg(creditLimit) > 0
+order by avg(creditLimit) DESC
+limit 3
+
+/* alternate short form of the query above: */
+SELECT avg(creditLimit), country FROM customers 
+where country in ("USA", "France", "Canada", "Israel", "Beligum")
+group by country
+having avg(creditLimit) > 0
+order by avg(creditLimit) DESC
+limit 3
+
+/* show how many sales rep per country, in descending order 
+and only for countries with 2 or more sales rep */
+SELECT count(*) as "number_of_sales_rep",country FROM 
+	offices join employees ON offices.officeCode = employees.officeCode
+where employees.jobTitle = "Sales Rep"
+group by country
+having number_of_sales_rep > 2
+order by number_of_sales_rep desc
+limit 2
+
+/* 1. from */
+/* 2. join */
+/* 3. where */
+/* 4. group by */
+/* 5. having */
+/* 6. select */
+/* 7. order by */
+/* 8. limit */ 
