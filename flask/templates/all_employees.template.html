@@ -8,7 +8,11 @@
 <body>
     <ul>
     {%for each_employee in cursor %}
-        <li>{{each_employee.firstName}} {{each_employee.lastName}}</li>
+        <li>
+            {{each_employee.firstName}} {{each_employee.lastName}}
+            <a href="{{ url_for('show_edit_employee_form', employeeNumber=each_employee.employeeNumber) }}">Edit</a>
+            <a href="{{ url_for('show_delete_employee_confirmation', employeeNumber=each_employee.employeeNumber) }}">Delete</a>
+        </li>
     {%endfor%}
     </ul>
 </body>

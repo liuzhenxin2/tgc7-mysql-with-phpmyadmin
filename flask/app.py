@@ -13,9 +13,13 @@ conn = pymysql.connect(
 )
 
 
+def create_cursor():
+    return conn.cursor(pymysql.cursors.DictCursor)
+
+
 @app.route('/employees')
 def show_employees():
-    cursor = conn.cursor(pymysql.cursors.DictCursor)
+    cursor = create_cursor()
     cursor.execute("select * from employees")
     return render_template('all_employees.template.html', cursor=cursor)
 
@@ -58,6 +62,97 @@ def process_create_office():
 
     conn.commit()
     return "done"
+
+
+@app.route('/employees/create')
+def show_create_employee():
+    cursor = conn.cursor(pymysql.cursors.DictCursor)
+    cursor.execute("select officeCode, city from offices")
+    return render_template("create_employee.template.html", offices=cursor)
+
+
+@app.route('/employees/create', methods=["POST"])
+def process_create_employee():
+    cursor = conn.cursor(pymysql.cursors.DictCursor)
+
+    sql = """insert into employees (employeeNumber, lastName, firstName,
+        extension, email, officeCode, jobTitle)
+        values (%s, %s, %s, %s, %s, %s, %s)"""
+
+    employeeNumber = random.randint(1000000, 9999999)
+
+    cursor.execute(sql, [
+        employeeNumber,
+        request.form.get('lastName'),
+        request.form.get('firstName'),
+        request.form.get('extension'),
+        request.form.get('email'),
+        request.form.get('officeCode'),
+        request.form.get('jobTitle')
+    ])
+
+    conn.commit()
+    return "done"
+
+
+@app.route('/employees/edit/<employeeNumber>')
+def show_edit_employee_form(employeeNumber):
+    cursor = conn.cursor(pymysql.cursors.DictCursor)
+    cursor.execute(
+        "select * from employees where employeeNumber=%s", employeeNumber)
+    employee = cursor.fetchone()
+
+    officeCursor = conn.cursor(pymysql.cursors.DictCursor)
+    officeCursor.execute("select * from offices")
+
+    return render_template('edit_employee.template.html', employee=employee,
+                           offices=officeCursor)
+
+
+@app.route('/employees/edit/<employeeNumber>', methods=["POST"])
+def process_edit_employee(employeeNumber):
+    cursor = conn.cursor(pymysql.cursors.DictCursor)
+
+    sql = """update employees set lastName=%s, firstName=%s, extension=%s, email=%s,
+        officeCode=%s, jobTitle=%s where employeeNumber= %s"""
+
+    cursor.execute(sql, [
+        request.form.get('lastName'),
+        request.form.get('firstName'),
+        request.form.get('extension'),
+        request.form.get('email'),
+        request.form.get('officeCode'),
+        request.form.get('jobTitle'),
+        employeeNumber
+    ])
+
+    # see the last execute statement
+    # print(cursor._last_executed)
+
+    conn.commit()
+    return "done"
+
+
+@app.route('/employees/delete/<employeeNumber>')
+def show_delete_employee_confirmation(employeeNumber):
+    cursor = conn.cursor(pymysql.cursors.DictCursor)
+    cursor.execute("select * from employees where employeeNumber = %s",
+                   employeeNumber)
+    # we are only expecting one result (becasue we selected by a primary key)
+    # so we will just fetchone
+    employee = cursor.fetchone()
+
+    return render_template("delete_employee_confirmation.template.html",
+                           employee=employee)
+
+
+@app.route('/employees/delete/<employeeNumber>', methods=["POST"])
+def process_delete_employee(employeeNumber):
+    cursor = conn.cursor(pymysql.cursors.DictCursor)
+    cursor.execute("delete from employees where employeeNumber=%s",
+                   employeeNumber)
+    conn.commit()
+    return "employee deleted"
 
 
 # "magic code" -- boilerplate
