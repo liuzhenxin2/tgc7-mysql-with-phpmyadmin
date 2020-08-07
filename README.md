@@ -32,5 +32,17 @@ The primary key must be `unsigned` (under attributes), `auto increment` (check t
 3. Can use `show tables` to sell the tables.
 
 
+# Using MySQL in Python
 
+Install the requirements:
 
+```
+pip3 install pymysql
+```
+# To import in a database file
+
+In terminal, in the same directory as your .sql file, type in:
+
+```
+mysql -u root < classicmodels.sql
+```
