@@ -14,3 +14,35 @@ To setup PHPMyAdmin for GitPod:
 4. Start apache with `apachectl start` and when the pop-up appears, click `Open Browser`
 5. At the browser, add `/phpmyadmin` to the end of the URL in the address bar
 6. Login with user `root` and no password.
+
+# Creating your table in PhpMyAdmin
+
+The primary key must be `unsigned` (under attributes), `auto increment` (check the A_I chekcbox) and the index must be `primary`
+
+# Using the command prompt
+
+1. Log in with `mysql -u root`
+
+2. Switch to the database. If database not created, create with:
+
+    `create database pet_owners`
+
+   Once we have created, we switch using `use pet_hospital;`
+
+3. Can use `show tables` to sell the tables.
+
+
+# Using MySQL in Python
+
+Install the requirements:
+
+```
+pip3 install pymysql
+```
+# To import in a database file
+
+In terminal, in the same directory as your .sql file, type in:
+
+```
+mysql -u root < classicmodels.sql
+```
